@@ -1,15 +1,13 @@
 import { useRoutes } from 'react-router-dom'
-import { ConfigProvider } from 'zarm'
-import zhCN from 'zarm/lib/config-provider/locale/zh_CN'
 
-import routes from './router'
+import routes from '@/router'
 
 function App() {
 
   return (
-    <ConfigProvider primaryColor={'#007fff'} locale={zhCN}>
+    <div className='app'>
       {useRoutes(routes)}
-    </ConfigProvider>
+    </div>
   )
 }
 

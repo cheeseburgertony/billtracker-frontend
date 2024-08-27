@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { createStyleImportPlugin } from 'vite-plugin-style-import'
+import { fileURLToPath } from 'url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -35,6 +36,11 @@ export default defineConfig({
         changeOrigin: 'true',  // 改变源
         rewrite: path => path.replace(/^\/api/, '') // 将/api去掉防止重复
       }
+    }
+  },
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     }
   }
 })

@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "paths": {
+      // 仅仅做联想提示
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
