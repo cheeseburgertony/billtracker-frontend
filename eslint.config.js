@@ -33,6 +33,8 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
+      'react/display-name': 'off', // 关闭 display-name 规则
+      'no-unused-vars': 'error', // 确保 no-unused-vars 规则启用
     },
   },
 ]
