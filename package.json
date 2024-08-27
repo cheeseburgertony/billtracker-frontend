@@ -16,7 +16,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.1",
-    "zarm": "^3.1.2"
+    "zarm": "^2.9.20"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

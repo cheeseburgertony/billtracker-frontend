@@ -1,9 +1,11 @@
-import Index from '@/pages/Index'
-import About from '@/pages/About'
+import Data from "@/pages/Data"
+import Home from "@/pages/Home"
+import User from "@/pages/User"
 
 const routes = [
-  { path: '/', element: <Index /> },
-  { path: '/about', element: <About /> }
+  { path: '/', element: <Home /> },
+  { path: '/data', element: <Data /> },
+  { path: '/user', element: <User /> }
 ]
 
 export default routes

@@ -1,13 +1,15 @@
 import { useRoutes } from 'react-router-dom'
 
 import routes from '@/router'
+import NavBar from '@/components/NavBar'
 
 function App() {
 
   return (
-    <div className='app'>
+    <>
       {useRoutes(routes)}
-    </div>
+      <NavBar showNav={true} />
+    </>
   )
 }
 
