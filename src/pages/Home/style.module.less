@@ -53,10 +53,19 @@
       .left {
         margin-right: 6px;
       }
+    }
+  }
 
-      .arrow {
-        font-size: 12px;
-        margin-left: 4px;
+  .contentWrap {
+    padding: 10px;
+    height: calc(~"(100% - 50px)");
+    overflow-y: scroll;
+    background-color: #f5f5f5;
+    overflow: hidden;
+
+    :global {
+      .za-pull {
+        overflow: unset;
       }
     }
   }

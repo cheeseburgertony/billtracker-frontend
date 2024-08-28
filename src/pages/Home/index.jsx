@@ -1,23 +1,24 @@
 import { memo, useState } from 'react'
 import s from './style.module.less'
+import BillItem from '@/components/BillItem'
 
 const Home = memo(() => {
-  // const [list, setList] = useState([
-  //   {
-  //     bills: [
-  //       {
-  //         amount: "25.00",
-  //         date: "1623390740000",
-  //         id: 911,
-  //         pay_type: 1,
-  //         remark: "",
-  //         type_id: 1,
-  //         type_name: "餐饮"
-  //       }
-  //     ],
-  //     date: '2024-06-11'
-  //   }
-  // ])
+  const [list, setList] = useState([
+    {
+      bills: [
+        {
+          amount: "25.00",
+          date: "1623390740000",
+          id: 911,
+          pay_type: 1,
+          remark: "",
+          type_id: 1,
+          type_name: "餐饮"
+        }
+      ],
+      date: '2024-06-11'
+    }
+  ])
 
   return (
     <div className={s.home}>
@@ -34,9 +35,9 @@ const Home = memo(() => {
             <span className={s.time}>2024-08</span>
           </div>
         </div>
-        {/* <div className={s.contentWrap}>
-          {list.map(item => <BillItem />)}
-        </div> */}
+      </div>
+      <div className={s.contentWrap}>
+        {list.map(item => <BillItem key={item} bill={item} />)}
       </div>
     </div>
   )

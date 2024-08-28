@@ -1,0 +1,56 @@
+.item {
+  margin-bottom: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+
+  .headerData {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    height: 40px;
+    background-color: #f9f9f9;
+
+    >div {
+      color: rgba(0, 0, 0, 0.9);
+    }
+
+    .date {
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .money {
+      >span {
+        margin-left: 20px;
+
+        img {
+          margin-right: 4px;
+          width: 20px;
+          vertical-align: -4px;
+        }
+      }
+    }
+  }
+
+  :global {
+    .za-cell {
+      &::after {
+        left: 0;
+      }
+
+      .za-cell__title {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+
+  .itemIcon {
+    margin-right: 2px;
+    vertical-align: -2px;
+    font-size: 24px;
+    color: #007fff;
+  }
+}
