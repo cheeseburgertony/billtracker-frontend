@@ -59,14 +59,20 @@
   .contentWrap {
     padding: 10px;
     height: calc(~"(100% - 50px)");
+    overflow: hidden;
     overflow-y: scroll;
     background-color: #f5f5f5;
-    overflow: hidden;
 
     :global {
       .za-pull {
         overflow: unset;
       }
     }
+  }
+
+  .add {
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
   }
 }
