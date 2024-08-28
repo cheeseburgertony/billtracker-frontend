@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import dayjs from 'dayjs'
 import { Pull } from 'zarm'
 
@@ -6,6 +6,7 @@ import s from './style.module.less'
 import BillItem from '@/components/BillItem'
 import { LOAD_STATE, REFRESH_STATE } from '@/utils'
 import { getBillListAPI } from '@/apis'
+import PopupType from '@/components/PopupType'
 
 const Home = memo(() => {
   const [list, setList] = useState([])
@@ -14,11 +15,13 @@ const Home = memo(() => {
   const [totalPage, setTotalPage] = useState(0)
   const [refresh, setRefresh] = useState(REFRESH_STATE.normal) // 刷新状态
   const [load, setLoad] = useState(LOAD_STATE.normal)  // 加载状态
+  const [currentSelect, setCurrentSelect] = useState({})  // 当前所选类型
+
+  const typeRef = useRef()
 
   // 获取账单列表
   const getBillListData = async () => {
-    const { data } = await getBillListAPI(currentTime, page)
-    console.log(data);
+    const { data } = await getBillListAPI(currentTime, page, currentSelect.id || 'all')
     if (page === 1) {
       setList(data.list)
     } else {
@@ -28,6 +31,11 @@ const Home = memo(() => {
     setLoad(LOAD_STATE.success)
     setRefresh(REFRESH_STATE.success)
   }
+
+  useEffect(() => {
+    getBillListData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, currentSelect])
 
   // 下拉刷新
   const refreshData = () => {
@@ -47,11 +55,19 @@ const Home = memo(() => {
     }
   }
 
-  useEffect(() => {
-    getBillListData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page])
+  // 点击显示类型选择弹窗
+  const showPopupType = () => {
+    typeRef.current && typeRef.current.show()
+  }
 
+  // 选择类型后触发(子组件传递回来调用)
+  const onSelectType = (item) => {
+    // 触发刷新列表,将分页重置为1,将选中项更新
+    setRefresh(REFRESH_STATE.loading)
+    setPage(1)
+    setCurrentSelect(item)
+  }
+  
 
   return (
     <div className={s.home}>
@@ -62,7 +78,7 @@ const Home = memo(() => {
         </div>
         <div className={s.typeWrap}>
           <div className={s.left}>
-            <span className={s.title}>类型</span>
+            <span className={s.title} onClick={showPopupType}>{currentSelect.name || '全部类型'}</span>
           </div>
           <div className={s.right}>
             <span className={s.time}>2024-08</span>
@@ -76,9 +92,10 @@ const Home = memo(() => {
           refresh={{ state: refresh, handler: refreshData }}
           load={{ state: load, distance: 200, handler: loadData }}
         >
-          {list.length && list.map((item, index) => <BillItem key={index} bill={item} />)}
+          {list.length > 0 && list.map((item, index) => <BillItem key={index} bill={item} />)}
         </Pull>
       </div>
+      <PopupType ref={typeRef} onSelect={onSelectType} />
     </div>
   )
 })
