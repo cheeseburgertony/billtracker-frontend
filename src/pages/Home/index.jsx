@@ -7,26 +7,34 @@ import BillItem from '@/components/BillItem'
 import { LOAD_STATE, REFRESH_STATE } from '@/utils'
 import { getBillListAPI } from '@/apis'
 import PopupType from '@/components/PopupType'
+import PopupDate from '@/components/PopupDate'
 
 const Home = memo(() => {
   const [list, setList] = useState([])
   const [currentTime, setCurrentTime] = useState(dayjs().format('YYYY-MM'))
   const [page, setPage] = useState(1)
   const [totalPage, setTotalPage] = useState(0)
+  const [totalExpense, setTotalExpense] = useState(0)
+  const [totalIncome, setTotalIncome] = useState(0)
+  const [currentType, setCurrentType] = useState({})  // 当前所选类型
   const [refresh, setRefresh] = useState(REFRESH_STATE.normal) // 刷新状态
   const [load, setLoad] = useState(LOAD_STATE.normal)  // 加载状态
-  const [currentSelect, setCurrentSelect] = useState({})  // 当前所选类型
 
   const typeRef = useRef()
+  const monthRef = useRef()
 
   // 获取账单列表
   const getBillListData = async () => {
-    const { data } = await getBillListAPI(currentTime, page, currentSelect.id || 'all')
+    const { data } = await getBillListAPI(currentTime, page, currentType.id || 'all')
+    console.log(data);
+
     if (page === 1) {
       setList(data.list)
     } else {
       setList([...list, ...data.list])
     }
+    setTotalExpense(data.totalExpense.toFixed(2))
+    setTotalIncome(data.totalIncome.toFixed(2))
     setTotalPage(data.totalPage)
     setLoad(LOAD_STATE.success)
     setRefresh(REFRESH_STATE.success)
@@ -35,7 +43,7 @@ const Home = memo(() => {
   useEffect(() => {
     getBillListData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, currentSelect])
+  }, [page, currentType, currentTime])
 
   // 下拉刷新
   const refreshData = () => {
@@ -60,28 +68,41 @@ const Home = memo(() => {
     typeRef.current && typeRef.current.show()
   }
 
+  // 点击显示月份选择弹窗
+  const showPopupDate = () => {
+    monthRef.current && monthRef.current.show()
+  }
+
   // 选择类型后触发(子组件传递回来调用)
   const onSelectType = (item) => {
     // 触发刷新列表,将分页重置为1,将选中项更新
     setRefresh(REFRESH_STATE.loading)
     setPage(1)
-    setCurrentSelect(item)
+    setCurrentType(item)
   }
-  
+
+  // 选择时间后触发
+  const onSelectDate = (item) => {
+    // 触发刷新列表,将分页重置为1,将选中项更新
+    setRefresh(REFRESH_STATE.loading)
+    setPage(1)
+    setCurrentTime(item)
+  }
+
 
   return (
     <div className={s.home}>
       <div className={s.header}>
         <div className={s.dataWrap}>
-          <span className={s.expense}>总支出：<b>¥ 200.00</b></span>
-          <span className={s.income}>总收入：<b>¥ 500.00</b></span>
+          <span className={s.expense}>总支出：<b>¥ {totalExpense}</b></span>
+          <span className={s.income}>总收入：<b>¥ {totalIncome}</b></span>
         </div>
         <div className={s.typeWrap}>
           <div className={s.left}>
-            <span className={s.title} onClick={showPopupType}>{currentSelect.name || '全部类型'}</span>
+            <span className={s.title} onClick={showPopupType}>{currentType.name || '全部类型'}</span>
           </div>
           <div className={s.right}>
-            <span className={s.time}>2024-08</span>
+            <span className={s.time} onClick={showPopupDate}>{currentTime}</span>
           </div>
         </div>
       </div>
@@ -96,6 +117,7 @@ const Home = memo(() => {
         </Pull>
       </div>
       <PopupType ref={typeRef} onSelect={onSelectType} />
+      <PopupDate ref={monthRef} mode='month' onSelect={onSelectDate} />
     </div>
   )
 })
