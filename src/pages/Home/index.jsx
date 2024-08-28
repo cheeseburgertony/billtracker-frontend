@@ -125,7 +125,7 @@ const Home = memo(() => {
       <PopupType ref={typeRef} onSelect={onSelectType} />
       <PopupDate ref={monthRef} mode='month' onSelect={onSelectDate} />
       <div className={s.add} onClick={addBill}><CustomIcon type='tianjia' /></div>
-      <PopupAddBill ref={addBillRef} />
+      <PopupAddBill ref={addBillRef} onReload={refreshData} />
     </div>
   )
 })

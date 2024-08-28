@@ -1,15 +1,18 @@
 import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import { Input, Keyboard, Popup, Toast } from 'zarm'
+import classNames from 'classnames'
+import dayjs from 'dayjs'
+import PropTypes from 'prop-types'
 
 import s from './style.module.less'
-import { Input, Keyboard, Popup } from 'zarm'
-import classNames from 'classnames'
 import PopupDate from '../PopupDate'
-import dayjs from 'dayjs'
 import CustomIcon from '../CustomIcon'
 import { typeMap } from '@/utils'
-import { getTypeListAPI } from '@/apis'
+import { getTypeListAPI, postBillAddAPI } from '@/apis'
 
 const PopupAddBill = memo(forwardRef((props, ref) => {
+  const { onReload } = props
+
   const [show, setShow] = useState(false)
   const [payType, setPayType] = useState('expense')
   const [date, setDate] = useState(new Date())
@@ -45,6 +48,35 @@ const PopupAddBill = memo(forwardRef((props, ref) => {
     setCurrentType(type === 'expense' ? expense[0] : income[0])
   }
 
+  // 添加账单操作
+  const addBill = async () => {
+    if (!amount) {
+      Toast.show('请输入具体金额')
+    }
+    // 参数准备
+    const params = {
+      amount: Number(amount).toFixed(2),
+      type_id: currentType.id,
+      type_name: currentType.name,
+      date: dayjs(date).unix() * 1000,
+      pay_type: payType === 'expense' ? 1 : 2,
+      remark: remark || ''
+    }
+    // 发生请求进行修改
+    const res = await postBillAddAPI(params)
+    console.log(res);
+    // 数据重置
+    setAmount('')
+    setPayType('expense')
+    setCurrentType(expense[0])
+    setDate(new Date())
+    setRemark('')
+    Toast.show('添加成功')
+    setShow(false)
+    // 调用父组件的方法进行刷新重新加载页面
+    if (onReload) onReload()
+  }
+
   // 数字键盘输入
   const onKeyClick = (value) => {
     if (value === 'delete') {
@@ -54,6 +86,7 @@ const PopupAddBill = memo(forwardRef((props, ref) => {
     }
 
     if (value === 'ok') {
+      addBill()
       return
     }
 
@@ -146,5 +179,9 @@ const PopupAddBill = memo(forwardRef((props, ref) => {
     </Popup>
   )
 }))
+
+PopupAddBill.propTypes = {
+  onReload: PropTypes.func
+}
 
 export default PopupAddBill
