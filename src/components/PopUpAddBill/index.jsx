@@ -1,7 +1,7 @@
 import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from 'react'
 
 import s from './style.module.less'
-import { Icon, Keyboard, Popup } from 'zarm'
+import { Input, Keyboard, Popup } from 'zarm'
 import classNames from 'classnames'
 import PopupDate from '../PopupDate'
 import dayjs from 'dayjs'
@@ -17,6 +17,8 @@ const PopupAddBill = memo(forwardRef((props, ref) => {
   const [expense, setExpense] = useState([])
   const [income, setIncome] = useState([])
   const [currentType, setCurrentType] = useState({})
+  const [remark, setRemark] = useState('')
+  const [showRemark, setShowRemark] = useState(false)
 
   const dateRef = useRef()
 
@@ -122,6 +124,21 @@ const PopupAddBill = memo(forwardRef((props, ref) => {
               </div>
             ))}
           </div>
+        </div>
+        <div className={s.remark}>
+          {showRemark ? (
+            <Input
+              autoHeight
+              showLength
+              maxLength={50}
+              type='text'
+              rows={3}
+              value={remark}
+              placeholder='请输入备注信息'
+              onChange={(value) => setRemark(value)}
+              onBlur={() => setShowRemark(false)}
+            />
+          ) : (<span onClick={() => setShowRemark(true)}>{remark || '添加备注'}</span>)}
         </div>
         <Keyboard type='price' onKeyClick={onKeyClick} />
         <PopupDate ref={dateRef} onSelect={(value) => setDate(value)} />
