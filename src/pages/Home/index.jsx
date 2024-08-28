@@ -8,6 +8,8 @@ import { LOAD_STATE, REFRESH_STATE } from '@/utils'
 import { getBillListAPI } from '@/apis'
 import PopupType from '@/components/PopupType'
 import PopupDate from '@/components/PopupDate'
+import CustomIcon from '@/components/CustomIcon'
+import PopupAddBill from '@/components/PopUpAddBill'
 
 const Home = memo(() => {
   const [list, setList] = useState([])
@@ -22,12 +24,11 @@ const Home = memo(() => {
 
   const typeRef = useRef()
   const monthRef = useRef()
+  const addBillRef = useRef()
 
   // 获取账单列表
   const getBillListData = async () => {
     const { data } = await getBillListAPI(currentTime, page, currentType.id || 'all')
-    console.log(data);
-
     if (page === 1) {
       setList(data.list)
     } else {
@@ -89,6 +90,11 @@ const Home = memo(() => {
     setCurrentTime(item)
   }
 
+  // 新增账单
+  const addBill = () => {
+    addBillRef.current && addBillRef.current.show()
+  }
+
 
   return (
     <div className={s.home}>
@@ -118,6 +124,8 @@ const Home = memo(() => {
       </div>
       <PopupType ref={typeRef} onSelect={onSelectType} />
       <PopupDate ref={monthRef} mode='month' onSelect={onSelectDate} />
+      <div className={s.add} onClick={addBill}><CustomIcon type='tianjia' /></div>
+      <PopupAddBill ref={addBillRef} />
     </div>
   )
 })
