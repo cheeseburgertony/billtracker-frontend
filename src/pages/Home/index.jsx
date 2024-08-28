@@ -70,16 +70,14 @@ const Home = memo(() => {
         </div>
       </div>
       <div className={s.contentWrap}>
-        {list.length && (
-          <Pull
-            animationDuration={200}
-            stayTime={400}
-            refresh={{ state: refresh, handler: refreshData }}
-            load={{ state: load, distance: 200, handler: loadData }}
-          >
-            {list.map((item, index) => <BillItem key={index} bill={item} />)}
-          </Pull>
-        )}
+        <Pull
+          animationDuration={200}
+          stayTime={400}
+          refresh={{ state: refresh, handler: refreshData }}
+          load={{ state: load, distance: 200, handler: loadData }}
+        >
+          {list.length && list.map((item, index) => <BillItem key={index} bill={item} />)}
+        </Pull>
       </div>
     </div>
   )
