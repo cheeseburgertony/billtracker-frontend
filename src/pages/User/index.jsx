@@ -1,5 +1,5 @@
 import { memo, useEffect, useState } from 'react'
-import { Cell } from 'zarm'
+import { Button, Cell, Modal, Toast } from 'zarm'
 import { useNavigate } from 'react-router-dom'
 
 import s from './style.module.less'
@@ -18,6 +18,18 @@ const User = memo(() => {
     getUserGetUserInfoData()
   }, [])
 
+  // 退出登录
+  const onLogOut = () => {
+    Modal.confirm({
+      title: '退出',
+      content: '是否退出登录',
+      onOk: () => {
+        localStorage.removeItem('token')
+        Toast.show('退出登录')
+        navigate('/login')
+      }
+    })
+  }
 
   return (
     <div className={s.user}>
@@ -51,6 +63,7 @@ const User = memo(() => {
           icon={<img src='//s.yezgea02.com/1615975178434/lianxi.png' style={{ width: '20px', verticalAlign: '-7px' }} />}
         />
       </div>
+      <Button className={s.logout} block theme='danger' onClick={onLogOut}>退出登录</Button>
     </div>
   )
 })

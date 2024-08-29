@@ -42,7 +42,6 @@ const Account = memo((props) => {
         }
       }
     })
-
   }
 
   return (

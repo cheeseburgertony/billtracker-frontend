@@ -1,7 +1,6 @@
 import { memo, useCallback, useState } from 'react'
 import { Button, Cell, Checkbox, Input, Toast } from 'zarm'
 import Captcha from 'react-captcha-code'
-import { useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
 
 import s from './style.module.less'
@@ -16,15 +15,13 @@ const Login = memo(() => {
   const [checkbox, setCheckbox] = useState(false)
   const [type, setType] = useState('login')
 
-  const navigate = useNavigate()
-
   // 验证码发生变化
   const handleChange = useCallback((captcha) => {
     console.log('caotcha', captcha);
     setCaptcha(captcha)
   }, [])
 
-  // 注册按钮触发
+  // 注册/登录按钮触发
   const handleSubmit = async () => {
     if (!username) {
       Toast.show('请输入账号')
@@ -34,7 +31,6 @@ const Login = memo(() => {
       Toast.show('请输入密码')
       return
     }
-
     try {
       // 登录/注册
       if (type === 'login') {
@@ -42,7 +38,8 @@ const Login = memo(() => {
         const res = await postUserLoginAPI({ username, password })
         localStorage.setItem('token', res.data.token)
         Toast.show(res.msg)
-        navigate('/', { replace: true })
+        // 之所以用window.location.href是因为要通过刷新页面让service中的request执行来获取最新的token
+        window.location.href = '/'
       } else if (type === 'register') {
         if (!verify) {
           Toast.show('请输入验证码')
@@ -56,7 +53,7 @@ const Login = memo(() => {
           Toast.show('请勾选同意协议')
           return
         }
-        // 发生请求
+        // 发送请求
         const res = await postUserRegisterAPI({ username, password })
         Toast.show(res.msg)
         if (res.code === 500) {
