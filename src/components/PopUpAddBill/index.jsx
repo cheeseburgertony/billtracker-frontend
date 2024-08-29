@@ -8,10 +8,10 @@ import s from './style.module.less'
 import PopupDate from '../PopupDate'
 import CustomIcon from '../CustomIcon'
 import { typeMap } from '@/utils'
-import { getTypeListAPI, postBillAddAPI } from '@/apis'
+import { getTypeListAPI, postBillAddAPI, postBillUpdateAPI } from '@/apis'
 
 const PopupAddBill = memo(forwardRef((props, ref) => {
-  const { onReload } = props
+  const { detail = {}, onReload } = props
 
   const [show, setShow] = useState(false)
   const [payType, setPayType] = useState('expense')
@@ -30,6 +30,7 @@ const PopupAddBill = memo(forwardRef((props, ref) => {
     close: () => setShow(false)
   }))
 
+  // 获取类型列表
   useEffect(() => {
     const getTypeListData = async () => {
       const { list } = await getTypeListAPI()
@@ -37,10 +38,26 @@ const PopupAddBill = memo(forwardRef((props, ref) => {
       const _income = list.filter(item => item.type === 2)
       setExpense(_expense)
       setIncome(_income)
-      setCurrentType(_expense[0])
+      if (!detail.id) {
+        setCurrentType(_expense[0])
+      }
     }
     getTypeListData()
-  }, [])
+  }, [detail.id])
+
+  // 传入带有详情时操作
+  useEffect(() => {
+    if (detail.id) {
+      setPayType(detail.pay_type === 1 ? 'expense' : 'income')
+      setCurrentType({
+        id: detail.type_id,
+        name: detail.type_name
+      })
+      setAmount(detail.amount)
+      setRemark(detail.remark)
+      setDate(dayjs(Number(detail.date)).$d) // 转换成原生Date对象
+    }
+  }, [detail])
 
   // 修改收入/支出
   const changePayType = (type) => {
@@ -52,6 +69,7 @@ const PopupAddBill = memo(forwardRef((props, ref) => {
   const addBill = async () => {
     if (!amount) {
       Toast.show('请输入具体金额')
+      return;
     }
     // 参数准备
     const params = {
@@ -62,16 +80,25 @@ const PopupAddBill = memo(forwardRef((props, ref) => {
       pay_type: payType === 'expense' ? 1 : 2,
       remark: remark || ''
     }
-    // 发生请求进行修改
-    const res = await postBillAddAPI(params)
-    console.log(res);
-    // 数据重置
-    setAmount('')
-    setPayType('expense')
-    setCurrentType(expense[0])
-    setDate(new Date())
-    setRemark('')
-    Toast.show('添加成功')
+
+    // 判断是否有id，进行添加还是修改
+    if (detail.id) {
+      params.id = detail.id
+      // 发送请求进行修改
+      await postBillUpdateAPI(params)
+      Toast.show('修改成功')
+    } else {
+      // 发送请求进行添加
+      const res = await postBillAddAPI(params)
+      console.log(res);
+      // 数据重置
+      setAmount('')
+      setPayType('expense')
+      setCurrentType(expense[0])
+      setDate(new Date())
+      setRemark('')
+      Toast.show('添加成功')
+    }
     setShow(false)
     // 调用父组件的方法进行刷新重新加载页面
     if (onReload) onReload()
@@ -181,6 +208,7 @@ const PopupAddBill = memo(forwardRef((props, ref) => {
 }))
 
 PopupAddBill.propTypes = {
+  detail: PropTypes.object,
   onReload: PropTypes.func
 }
 

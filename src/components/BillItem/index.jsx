@@ -69,7 +69,7 @@ const BillItem = memo((props) => {
           )}
           help={(
             <div>
-              {dayjs(Number(item.date)).format('HH:MM')} {item.remark ? `| ${item.remark}` : ''}
+              {dayjs(Number(item.date)).format('HH:mm')} {item.remark ? `| ${item.remark}` : ''}
             </div>
           )}
         >

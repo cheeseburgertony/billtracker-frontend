@@ -6,3 +6,12 @@ export const getBillListAPI = (date, page = 1, type_id = 'all') =>
 
 // 新增账单
 export const postBillAddAPI = (params) => request.post('/api/bill/add', params)
+
+// 获取账单详情
+export const getBillDetailAPI = (id) => request.get(`/api/bill/detail?id=${id}`)
+
+// 删除订单
+export const postBillDeleteAPI = (id) => request.post('/api/bill/delete', { id })
+
+// 修改账单
+export const postBillUpdateAPI = (params) => request.post('/api/bill/update', params)
