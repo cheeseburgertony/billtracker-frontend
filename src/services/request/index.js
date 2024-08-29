@@ -26,15 +26,19 @@ request.interceptors.request.use(function (config) {
 request.interceptors.response.use(function (response) {
   // 2xx 范围内的状态码都会触发该函数。
   // 对响应数据做点什么
+
+  // 处理401错误(token失效)
+  if (response.data.code == 401) {
+    Toast.show('登录过期,请重新登录')
+    setTimeout(() => {
+      window.location.href = '/login'
+    }, 300)
+  }
   return response.data;
 }, function (error) {
   // 超出 2xx 范围的状态码都会触发该函数。
-  // 对响应错误做点什么
+  // 对响应错误做点什么  
   Toast.show(error.response.data.message)
-  // 处理401错误(token失效)
-  if (error.response.status === 401) {
-    window.location.href = '/login'
-  }
   return Promise.reject(error);
 });
 

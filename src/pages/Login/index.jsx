@@ -1,11 +1,12 @@
 import { memo, useCallback, useState } from 'react'
 import { Button, Cell, Checkbox, Input, Toast } from 'zarm'
 import Captcha from 'react-captcha-code'
+import { useNavigate } from 'react-router-dom'
+import classNames from 'classnames'
 
 import s from './style.module.less'
 import CustomIcon from '@/components/CustomIcon'
 import { postUserLoginAPI, postUserRegisterAPI } from '@/apis/user'
-import classNames from 'classnames'
 
 const Login = memo(() => {
   const [username, setUsername] = useState('')
@@ -14,6 +15,8 @@ const Login = memo(() => {
   const [captcha, setCaptcha] = useState('')
   const [checkbox, setCheckbox] = useState(false)
   const [type, setType] = useState('login')
+
+  const navigate = useNavigate()
 
   // 验证码发生变化
   const handleChange = useCallback((captcha) => {
@@ -39,6 +42,7 @@ const Login = memo(() => {
         const res = await postUserLoginAPI({ username, password })
         localStorage.setItem('token', res.data.token)
         Toast.show(res.msg)
+        navigate('/', { replace: true })
       } else if (type === 'register') {
         if (!verify) {
           Toast.show('请输入验证码')
