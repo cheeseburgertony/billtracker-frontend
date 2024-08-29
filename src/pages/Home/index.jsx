@@ -10,6 +10,7 @@ import PopupType from '@/components/PopupType'
 import PopupDate from '@/components/PopupDate'
 import CustomIcon from '@/components/CustomIcon'
 import PopupAddBill from '@/components/PopUpAddBill'
+import Empty from '@/components/Empty'
 
 const Home = memo(() => {
   const [list, setList] = useState([])
@@ -121,6 +122,7 @@ const Home = memo(() => {
         >
           {list.length > 0 && list.map((item, index) => <BillItem key={index} bill={item} />)}
         </Pull>
+        {list.length <= 0 && <Empty />}
       </div>
       <PopupType ref={typeRef} onSelect={onSelectType} />
       <PopupDate ref={monthRef} mode='month' onSelect={onSelectDate} />
