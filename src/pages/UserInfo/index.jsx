@@ -3,17 +3,21 @@ import { memo, useEffect, useState } from 'react'
 import s from './style.module.less'
 import { Button, FilePicker, Input, Toast } from 'zarm'
 import Header from '@/components/Header'
-import { getUserGetUserInfoAPI, postUploadAPI } from '@/apis'
+import { getUserGetUserInfoAPI, postUploadAPI, postUserEditUserInfoAPI } from '@/apis'
+import { useNavigate } from 'react-router-dom'
+import { imgUrlTrans } from '@/utils/imgUrlTrans'
 
 const UserInfo = memo(() => {
   const [avatar, setAvatar] = useState('')
   const [signature, setSignature] = useState('')
 
+  const navigate = useNavigate()
+
   useEffect(() => {
     // 获取用户信息
     const getUserGetUserInfoData = async () => {
       const { data } = await getUserGetUserInfoAPI()
-      setAvatar(data.avatar)
+      setAvatar(imgUrlTrans(data.avatar))
       setSignature(data.signature)
     }
     getUserGetUserInfoData()
@@ -22,9 +26,8 @@ const UserInfo = memo(() => {
 
   // 选择图片
   const handleSelect = async (file) => {
-    console.log('file', file);
     // 限制图片上传大小不超过200KB
-    if (file && file.file.size > 900 * 1024) {
+    if (file && file.file.size > 200 * 1024) {
       Toast.show('上传头像不得超过200KB!')
       return
     }
@@ -33,12 +36,18 @@ const UserInfo = memo(() => {
     formData.append('file', file.file)
     // 发送请求进行上传
     const { data } = await postUploadAPI(formData)
-    setAvatar(data)
+    // 给图片地址添加上服务器地址
+    setAvatar(imgUrlTrans(data))
   }
 
   // 保存操作
-  const onSave = () => {
-    
+  const onSave = async () => {
+    await postUserEditUserInfoAPI({
+      signature,
+      avatar
+    })
+    Toast.show('修改成功')
+    navigate(-1)
   }
 
   return (

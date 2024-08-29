@@ -16,7 +16,10 @@ export const postUploadAPI = (formData) =>
     method: 'POST',
     url: '/api/upload',
     data: formData,
-    headers:{
-      'Content-Type':'multipart/form-data',
+    headers: {
+      'Content-Type': 'multipart/form-data',
     }
   })
+
+// 修改用户信息
+export const postUserEditUserInfoAPI = (params) => request.post('/api/user/edit_userinfo', params)
