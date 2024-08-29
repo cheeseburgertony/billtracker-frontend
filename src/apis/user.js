@@ -23,3 +23,6 @@ export const postUploadAPI = (formData) =>
 
 // 修改用户信息
 export const postUserEditUserInfoAPI = (params) => request.post('/api/user/edit_userinfo', params)
+
+// 修改用户密码
+export const postUserModifyPassAPI = (params) => request.post('/api/user/modify_pass', params)

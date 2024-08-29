@@ -27,12 +27,17 @@ request.interceptors.response.use(function (response) {
   // 2xx 范围内的状态码都会触发该函数。
   // 对响应数据做点什么
 
-  // 处理401错误(token失效)
-  if (response.data.code == 401) {
-    Toast.show('登录过期,请重新登录')
-    setTimeout(() => {
-      window.location.href = '/login'
-    }, 300)
+  // 返回的非200的进行错误提示
+  if (response.data.code !== 200) {
+    // 处理401错误(token失效)
+    if (response.data.code === 401) {
+      Toast.show('登录过期,请重新登录')
+      setTimeout(() => {
+        window.location.href = '/login'
+      }, 300)
+    } else {
+      Toast.show(response.data.msg)
+    }
   }
   return response.data;
 }, function (error) {
