@@ -1,5 +1,5 @@
 import { useLocation, useRoutes } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 
 import routes from '@/router'
 import NavBar from '@/components/NavBar'
@@ -16,7 +16,9 @@ function App() {
 
   return (
     <>
-      {useRoutes(routes)}
+      <Suspense fallback='loading'>
+        {useRoutes(routes)}
+      </Suspense>
       <NavBar showNav={showNav} />
     </>
   )
