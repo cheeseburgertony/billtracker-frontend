@@ -1,3 +1,4 @@
+import Account from "@/pages/Account"
 import Data from "@/pages/Data"
 import Detail from "@/pages/Detail"
 import Home from "@/pages/Home"
@@ -11,7 +12,8 @@ const routes = [
   { path: '/user', element: <User /> },
   { path: '/detail', element: <Detail /> },
   { path: '/login', element: <Login /> },
-  { path: '/userinfo', element: <UserInfo /> }
+  { path: '/userinfo', element: <UserInfo /> },
+  { path: '/account', element: <Account /> }
 ]
 
 export default routes
