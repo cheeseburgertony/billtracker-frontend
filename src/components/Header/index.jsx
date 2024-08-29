@@ -1,8 +1,8 @@
 import { memo } from 'react'
 import PropTypes from 'prop-types'
 import { NavBar } from 'zarm'
-import { ArrowLeft } from '@zarm-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { ArrowLeft } from '@zarm-design/icons'
+import { useNavigate } from 'react-router-dom'
 
 import s from './style.module.less'
 
