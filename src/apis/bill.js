@@ -15,3 +15,6 @@ export const postBillDeleteAPI = (id) => request.post('/api/bill/delete', { id }
 
 // 修改账单
 export const postBillUpdateAPI = (params) => request.post('/api/bill/update', params)
+
+// 获取图表数据（按消费类型整理后的数据
+export const getBillDataAPI = (date) => request.get(`/api/bill/data?date=${date}`)
