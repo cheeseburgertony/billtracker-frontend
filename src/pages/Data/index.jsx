@@ -2,13 +2,15 @@ import { memo, useEffect, useRef, useState } from 'react'
 import { Icon, Progress } from 'zarm'
 import PopupDate from '@/components/PopupDate'
 import dayjs from 'dayjs'
+import classNames from 'classnames'
 
 import s from './style.module.less'
-import classNames from 'classnames'
 import CustomIcon from '@/components/CustomIcon'
 import { typeMap } from '@/utils'
 import { getBillDataAPI } from '@/apis'
+
 const MyIcon = Icon.createFromIconfont('//at.alicdn.com/t/c/font_4668023_je4xn29sh.js')
+let proportionChart = null; // 用于存放 echart 初始化返回的实例
 
 const Data = memo(() => {
   const [currentMonth, setCurrentMonth] = useState(dayjs().format('YYYY-MM'))
@@ -17,6 +19,7 @@ const Data = memo(() => {
   const [totalIncome, setTotalIncome] = useState(0)
   const [expenseData, setExpenseData] = useState([])
   const [incomeData, setIncomeData] = useState([])
+  const [piePayType, setPiePayType] = useState('expense') // 饼图的收入和支出控制
 
   const monthRef = useRef()
 
@@ -31,9 +34,55 @@ const Data = memo(() => {
       const _incomeData = data.total_data.filter(item => item.pay_type === 2).sort((a, b) => b.number - a.number)
       setExpenseData(_expenseData)
       setIncomeData(_incomeData)
+      // 绘制饼图
+      setPieChart(piePayType === 'expense' ? _expenseData : _incomeData)
     }
     getBillData()
-  }, [currentMonth])
+
+    return () => {
+      // 每次组件卸载的时候，需要释放图表实例。clear 只是将其清空不会释放。
+      proportionChart.dispose()
+    }
+  }, [currentMonth, piePayType])
+
+  // 绘制饼图方法
+  const setPieChart = (data) => {
+    if (window.echarts) {
+      // 初始化饼图,返回实例
+      // eslint-disable-next-line no-undef
+      proportionChart = echarts.init(document.querySelector('#proportion'))
+      proportionChart.setOption({
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        // 图例
+        legend: {
+          data: data.map(item => item.type_name)
+        },
+        series: [
+          {
+            name: '支出',
+            type: 'pie',
+            radius: '55%',
+            data: data.map(item => {
+              return {
+                value: item.number,
+                name: item.type_name
+              }
+            }),
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      })
+    }
+  }
 
   return (
     <div className={s.data}>
@@ -43,11 +92,11 @@ const Data = memo(() => {
           <MyIcon className={s.date} type='icon-date' />
         </div>
         <div className={s.title}>共支出</div>
-        <div className={s.expense}>¥1000.00</div>
-        <div className={s.income}>共收入¥200.00</div>
+        <div className={s.expense}>¥{totalExpense}</div>
+        <div className={s.income}>共收入¥{totalIncome}</div>
       </div>
       <PopupDate ref={monthRef} mode='month' onSelect={(month) => setCurrentMonth(month)} />
-
+      {/* 排行区域 */}
       <div className={s.structure}>
         <div className={s.head}>
           <span className={s.title}>收支构成</span>
@@ -90,6 +139,30 @@ const Data = memo(() => {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+      {/* 饼图区域 */}
+      <div className={s.structure}>
+        <div className={s.proportion}>
+          <div className={s.head}>
+            <span className={s.title}>收支构成</span>
+            <div className={s.tab}>
+              <span
+                className={classNames(s.expense, { [s.active]: piePayType === 'expense' })}
+                onClick={() => setPiePayType('expense')}
+              >
+                支出
+              </span>
+              <span
+                className={classNames(s.income, { [s.active]: piePayType === 'income' })}
+                onClick={() => setPiePayType('income')}
+              >
+                收入
+              </span>
+            </div>
+          </div>
+          {/* 用于防止饼图的DOM节点 */}
+          <div id='proportion'></div>
         </div>
       </div>
     </div>
