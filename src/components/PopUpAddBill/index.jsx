@@ -119,6 +119,7 @@ const PopupAddBill = memo(forwardRef((props, ref) => {
 
     if (value === 'close') {
       setShow(false)
+      return
     }
 
     // 当已经存在.时不允许继续加.
