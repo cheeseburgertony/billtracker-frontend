@@ -179,7 +179,7 @@ const PopupAddBill = memo(forwardRef((props, ref) => {
                       [s.active]: currentType.id === item.id
                     })}
                 >
-                  <CustomIcon className={s.iconfont} type={typeMap[item.id].icon} />
+                  <CustomIcon className={s.iconfont} type={typeMap[item.id]?.icon} />
                 </span>
                 <span>{item.name}</span>
               </div>
