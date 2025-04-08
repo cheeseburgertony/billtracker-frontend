@@ -1,51 +1,51 @@
 // 根据type_id映射相对应的icon的type
 export const typeMap = {
-  1: {
+  "1": {
     icon: "canyin",
   },
-  2: {
+  "2": {
     icon: "fushi",
   },
-  3: {
+  "3": {
     icon: "jiaotong",
   },
-  4: {
+  "4": {
     icon: "riyong",
   },
-  5: {
+  "5": {
     icon: "gouwu",
   },
-  6: {
+  "6": {
     icon: "xuexi",
   },
-  7: {
+  "7": {
     icon: "yiliao",
   },
-  8: {
+  "8": {
     icon: "lvxing",
   },
-  9: {
+  "9": {
     icon: "renqing",
   },
-  10: {
+  "10": {
     icon: "qita",
   },
-  11: {
+  "11": {
     icon: "gongzi",
   },
-  12: {
+  "12": {
     icon: "jiangjin",
   },
-  13: {
+  "13": {
     icon: "zhuanzhang",
   },
-  14: {
+  "14": {
     icon: "licai",
   },
-  15: {
+  "15": {
     icon: "tuikuang",
   },
-  16: {
+  "16": {
     icon: "qita",
   },
 };

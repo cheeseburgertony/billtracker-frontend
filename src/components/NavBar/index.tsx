@@ -15,6 +15,7 @@ const NavBar = memo(({ showNav }: { showNav: boolean }) => {
 
   return (
     <>
+      {/* @ts-ignore - zarm component type issue */}
       <TabBar
         visible={showNav}
         className={s.tab}
