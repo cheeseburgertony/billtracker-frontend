@@ -1,3 +1,7 @@
+[中文](README.md#中文文档) | [English](README.md#english-documentation)
+
+<a id="中文文档"></a>
+
 # 💰 BillTracker 记账本 💸
 
 一个基于 React 和 TypeScript 的移动端记账应用，帮助用户轻松记录和管理日常收支。从此告别"钱去哪了"的困惑，让你的钱包不再神秘消瘦！
@@ -180,3 +184,190 @@ npm run build
 _记账也可以很有趣，让我们一起让理财生活变得更美好！_ ✨
 
 _本 README 文件由 AI 助手生成_
+
+---
+
+<a id="english-documentation"></a>
+
+# 💰 BillTracker 💸
+
+A mobile expense tracking application based on React and TypeScript, helping users easily record and manage daily income and expenses. Say goodbye to the confusion of "where did my money go" and stop your wallet from mysteriously losing weight!
+
+> 💡 **With or without money, keeping track of finances helps you sleep better!**
+
+## ✨ Tech Stack
+
+- **Frontend Framework**: React 18.x ⚛️
+- **Build Tool**: Vite 5.x 🚀
+- **Language**: TypeScript 5.x 📝
+- **UI Library**: Zarm Design 2.8.2 🎨
+- **Routing**: React Router Dom 6.x 🧭
+- **HTTP Requests**: Axios 📡
+- **Styling**: Less + CSS Modules 💅
+- **Mobile Adaptation**: lib-flexible + postcss-pxtorem 📱
+- **Date Handling**: dayjs 📅
+- **Form Handling**: rc-form 📋
+- **Data Visualization**: ECharts 📊
+
+## 🚀 Installation & Running
+
+### Requirements
+
+- Node.js 16.x or higher 🟢
+- npm 8.x or higher 📦
+
+### Install Dependencies
+
+```bash
+npm install --legacy-peer-deps
+```
+
+### Run Development Mode
+
+```bash
+npm run dev
+```
+
+☕ Grab a coffee, the code is starting up enthusiastically...
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+🔨 The moment of truth has arrived!
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+👀 Let's see how it looks!
+
+## 📂 Project Structure
+
+```
+billtracker-frontend/
+├── public/                 # Static assets (files resting peacefully here)
+├── src/                    # Source code (where all the magic happens)
+│   ├── apis/               # API definitions (small bridges to the backend)
+│   ├── assets/             # Static resources (images, fonts, and other decorations)
+│   ├── components/         # Reusable components (small pieces in the building blocks box)
+│   ├── pages/              # Page components (each page is a small world)
+│   ├── router/             # Routing configuration (signposts guiding users forward)
+│   ├── services/           # Service layer (busy little bees)
+│   ├── types/              # TypeScript type definitions (code world legal documents)
+│   ├── utils/              # Utility functions (Swiss Army knife collection)
+│   ├── App.tsx             # Application entry component (the starting point)
+│   ├── index.css           # Global styles (global makeup)
+│   └── main.tsx            # Application entry file (the door to the project)
+├── .gitignore              # Git ignore file configuration (selective amnesia list)
+├── eslint.config.js        # ESLint configuration (code style police)
+├── index.html              # HTML template (webpage skeleton)
+├── package.json            # Project dependencies (project menu)
+├── postcss.config.cjs      # PostCSS configuration (CSS magic wand)
+├── tsconfig.json           # TypeScript configuration (TS rulebook)
+├── tsconfig.node.json      # Node-related TypeScript configuration (another rulebook)
+├── vite.config.ts          # Vite configuration (build tool baton)
+└── vite-env.d.ts           # Vite environment type declarations (environment manual)
+```
+
+## 🌟 Features
+
+- Mobile-friendly UI design 📱 _(Aesthetics are justice)_
+- CRUD operations for income and expense records 💼 _(Control every penny's destination)_
+- Data visualization statistics 📊 _(Let the data speak, prettier than Excel)_
+- Bill category management 🏷️ _(No more confusion about where your money went)_
+- User authentication and profile management 🔐 _(Security first, track with peace of mind)_
+- Responsive layout, adapts to various mobile devices 📲 _(From iPhone mini to iPad Pro, use with elegance)_
+
+> 🤔 **Did you know?** Research shows that people who consistently track expenses save an average of 15% more per month than those who don't. Start tracking and say goodbye to living paycheck to paycheck!
+
+## 💻 Development Guide
+
+### Styling
+
+The project uses Less preprocessor and CSS Modules for styling, with files named `*.module.less`. Mobile adaptation is achieved using `lib-flexible` and `postcss-pxtorem`, with a design draft base width of 375px.
+
+```less
+// Example: components/Button/index.module.less
+.button {
+  width: 100px; // Will be automatically converted to rem units
+  height: 40px;
+}
+```
+
+_CSS can be elegant too, just like writing poetry~_
+
+### Router Configuration
+
+Configure routes in the `src/router` directory. _Like drawing a map for the application, telling users how to "browse" it._
+
+### API Requests
+
+Use Axios for API requests, with API interface definitions in the `src/apis` directory. The project has configured API proxies, so requests starting with `/api` will be proxied to `http://backend.com/api/` during development.
+
+_Communication between frontend and backend is like dating - both sides need to understand each other's language~_
+
+### Adding New Pages
+
+1. Create page components in the `src/pages` directory _(Building a small room in the digital world)_
+2. Add the new page to the router configuration _(Installing a door for this room)_
+3. If API interaction is needed, add the corresponding interface in `src/apis` _(Teaching it how to communicate with the outside world)_
+
+### Using UI Components
+
+The project uses Zarm Design as the UI component library, configured for on-demand import.
+
+```tsx
+import { Button } from "zarm";
+
+function MyComponent() {
+  return <Button theme="primary">Button</Button>;
+}
+```
+
+_Like LEGO blocks, combining to create beautiful interfaces!_
+
+## 🚢 Deployment
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+The built files will be generated in the `dist` directory and can be deployed to any static file server. _The small application is about to set sail toward the sea of the internet!_
+
+### Environment Variable Configuration
+
+When deploying to different environments, you can create corresponding environment variable files:
+
+- `.env`: Default environment variables _(Universal equipment for all occasions)_
+- `.env.development`: Development environment variables _(Secret recipe for development)_
+- `.env.production`: Production environment variables _(Perfect makeup for the official stage)_
+
+## 🌈 Why Use BillTracker?
+
+- 👋 **Say Goodbye to Paper Records** - No more worries about losing your ledger or calculation errors
+- 🔍 **Crystal Clear** - Chart analysis lets you clearly see where your money is going
+- 🧠 **Reduce Memory Burden** - No need to remember every expense with your brain
+- 💰 **Develop Financial Habits** - Wise consumption, reasonable savings, wealth growth
+- 🌱 **Paperless & Eco-friendly** - Save trees, protect the planet
+
+> 💬 **User Feedback**: "Since I started using this expense tracker, I discovered I was spending the equivalent of a smartphone on bubble tea every month!" — A former bubble tea enthusiast
+
+## 📱 Usage Scenarios
+
+- 🛒 **When Shopping** - Record each shopping expense
+- 🍜 **When Paying for Meals** - Quickly record dining expenses
+- 💼 **When Receiving Salary** - Record income, plan budget
+- 📊 **At Month-end Review** - Analyze monthly consumption, adjust next month's plan
+
+---
+
+_Expense tracking can be fun too, let's make financial life better together!_ ✨
+
+_This README file was generated by an AI assistant_
