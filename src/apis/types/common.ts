@@ -1,5 +1,5 @@
 export type ResType<T = any> = {
   code: number;
-  message: string;
+  msg: string;
   data: T;
 };

@@ -7,6 +7,7 @@ import "./index.css";
 import App from "./App";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
+  // @ts-ignore - zarm component type issue
   <ConfigProvider primaryColor="#007fff" locale={zhCN}>
     <HashRouter>
       <App />
