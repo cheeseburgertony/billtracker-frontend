@@ -20,11 +20,11 @@ const Data = memo(() => {
     dayjs().format("YYYY-MM")
   );
   const [payType, setPayType] = useState("expense");
-  const [totalExpense, setTotalExpense] = useState(0);
-  const [totalIncome, setTotalIncome] = useState(0);
+  const [totalExpense, setTotalExpense] = useState("0.00");
+  const [totalIncome, setTotalIncome] = useState("0.00");
   const [expenseData, setExpenseData] = useState<TotalDatum[]>([]);
   const [incomeData, setIncomeData] = useState<TotalDatum[]>([]);
-  const [piePayType, setPiePayType] = useState("expense"); // 饼图的收入和支出控制
+  const [piePayType, setPiePayType] = useState<"expense" | "income">("expense"); // 饼图的收入和支出控制
 
   const monthRef = useRef<{ show: () => void }>();
 
@@ -32,8 +32,8 @@ const Data = memo(() => {
     const getBillData = async () => {
       // 获取整理后的数据
       const { data } = await getBillDataAPI(currentMonth);
-      setTotalExpense(+data.total_expense);
-      setTotalIncome(+data.total_income);
+      setTotalExpense(data.total_expense);
+      setTotalIncome(data.total_income);
       // 过滤出支出/收入
       const _expenseData = data.total_data
         .filter((item) => item.pay_type === 1)
@@ -73,7 +73,7 @@ const Data = memo(() => {
         },
         series: [
           {
-            name: "支出",
+            name: piePayType === "expense" ? "支出" : "收入",
             type: "pie",
             radius: "55%",
             data: data.map((item) => {
